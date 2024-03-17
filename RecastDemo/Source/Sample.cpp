@@ -62,9 +62,9 @@ Sample::Sample() :
 	m_navQuery(0),
 	m_crowd(0),
 	m_navMeshDrawFlags(DU_DRAWNAVMESH_OFFMESHCONS|DU_DRAWNAVMESH_CLOSEDLIST),
-	m_filterLowHangingObstacles(true),
-	m_filterLedgeSpans(true),
-	m_filterWalkableLowHeightSpans(true),
+	m_filterLowHangingObstacles(false),
+	m_filterLedgeSpans(false),
+	m_filterWalkableLowHeightSpans(false),
 	m_tool(0),
 	m_ctx(0)
 {
@@ -169,12 +169,12 @@ void Sample::collectSettings(BuildSettings& settings)
 
 void Sample::resetCommonSettings()
 {
-	m_cellSize = 0.3f;
-	m_cellHeight = 0.2f;
-	m_agentHeight = 2.0f;
-	m_agentRadius = 0.6f;
-	m_agentMaxClimb = 0.9f;
-	m_agentMaxSlope = 45.0f;
+	m_cellSize = 0.1f;
+	m_cellHeight = 0.1f;
+	m_agentHeight = 0.2f;
+	m_agentRadius = 0.1f;
+	m_agentMaxClimb = 0.5f;
+	m_agentMaxSlope = 50.0f;
 	m_regionMinSize = 8;
 	m_regionMergeSize = 20;
 	m_edgeMaxLen = 12.0f;
@@ -182,7 +182,7 @@ void Sample::resetCommonSettings()
 	m_vertsPerPoly = 6.0f;
 	m_detailSampleDist = 6.0f;
 	m_detailSampleMaxError = 1.0f;
-	m_partitionType = SAMPLE_PARTITION_WATERSHED;
+	m_partitionType = SAMPLE_PARTITION_MONOTONE;
 }
 
 void Sample::handleCommonSettings()
