@@ -40,7 +40,7 @@ unsigned int duDebugDraw::areaToCol(unsigned int area)
 	}
 }
 
-inline int bit(int a, int b)
+inline static int bit(int a, int b)
 {
 	return (a & (1 << b)) >> b;
 }
@@ -364,7 +364,7 @@ void duAppendCylinder(struct duDebugDraw* dd, float minx, float miny, float minz
 }
 
 
-inline void evalArc(const float x0, const float y0, const float z0,
+inline static void evalArc(const float x0, const float y0, const float z0,
 					const float dx, const float dy, const float dz,
 					const float h, const float u, float* res)
 {
@@ -374,14 +374,14 @@ inline void evalArc(const float x0, const float y0, const float z0,
 }
 
 
-inline void vcross(float* dest, const float* v1, const float* v2)
+inline static void vcross(float* dest, const float* v1, const float* v2)
 {
 	dest[0] = v1[1]*v2[2] - v1[2]*v2[1];
 	dest[1] = v1[2]*v2[0] - v1[0]*v2[2];
 	dest[2] = v1[0]*v2[1] - v1[1]*v2[0]; 
 }
 
-inline void vnormalize(float* v)
+inline static void vnormalize(float* v)
 {
 	float d = 1.0f / sqrtf(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 	v[0] *= d;
@@ -389,14 +389,14 @@ inline void vnormalize(float* v)
 	v[2] *= d;
 }
 
-inline void vsub(float* dest, const float* v1, const float* v2)
+inline static void vsub(float* dest, const float* v1, const float* v2)
 {
 	dest[0] = v1[0]-v2[0];
 	dest[1] = v1[1]-v2[1];
 	dest[2] = v1[2]-v2[2];
 }
 
-inline float vdistSqr(const float* v1, const float* v2)
+inline static float vdistSqr(const float* v1, const float* v2)
 {
 	const float x = v1[0]-v2[0];
 	const float y = v1[1]-v2[1];
@@ -405,7 +405,7 @@ inline float vdistSqr(const float* v1, const float* v2)
 }
 
 
-void appendArrowHead(struct duDebugDraw* dd, const float* p, const float* q,
+static void appendArrowHead(struct duDebugDraw* dd, const float* p, const float* q,
 					 const float s, unsigned int col)
 {
 	const float eps = 0.001f;
@@ -599,7 +599,7 @@ void duDisplayList::end()
 {
 }
 
-void duDisplayList::draw(struct duDebugDraw* dd)
+void duDisplayList::draw(struct duDebugDraw* dd) const
 {
 	if (!dd) return;
 	if (!m_size) return;

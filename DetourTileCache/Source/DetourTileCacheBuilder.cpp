@@ -143,7 +143,7 @@ struct dtTempContour
 
 
 
-inline bool overlapRangeExl(const unsigned short amin, const unsigned short amax,
+inline static bool overlapRangeExl(const unsigned short amin, const unsigned short amax,
 							const unsigned short bmin, const unsigned short bmax)
 {
 	return (amin >= bmax || amax <= bmin) ? false : true;
@@ -157,7 +157,7 @@ static void addUniqueLast(unsigned char* a, unsigned char& an, unsigned char v)
 	an++;
 }
 
-inline bool isConnected(const dtTileCacheLayer& layer,
+inline static bool isConnected(const dtTileCacheLayer& layer,
 						const int ia, const int ib, const int walkableClimb)
 {
 	if (layer.areas[ia] != layer.areas[ib]) return false;
@@ -841,7 +841,7 @@ dtStatus dtBuildTileCacheContours(dtTileCacheAlloc* alloc,
 
 static const int VERTEX_BUCKET_COUNT2 = (1<<8);
 
-inline int computeVertexHash2(int x, int y, int z)
+inline static int computeVertexHash2(int x, int y, int z)
 {
 	const unsigned int h1 = 0x8da6b343; // Large multiplicative constants;
 	const unsigned int h2 = 0xd8163841; // here arbitrarily chosen primes
@@ -1076,10 +1076,10 @@ static bool buildMeshAdjacency(dtTileCacheAlloc* alloc,
 
 
 // Last time I checked the if version got compiled using cmov, which was a lot faster than module (with idiv).
-inline int prev(int i, int n) { return i-1 >= 0 ? i-1 : n-1; }
-inline int next(int i, int n) { return i+1 < n ? i+1 : 0; }
+inline static int prev(int i, int n) { return i-1 >= 0 ? i-1 : n-1; }
+inline static int next(int i, int n) { return i+1 < n ? i+1 : 0; }
 
-inline int area2(const unsigned char* a, const unsigned char* b, const unsigned char* c)
+inline static int area2(const unsigned char* a, const unsigned char* b, const unsigned char* c)
 {
 	return ((int)b[0] - (int)a[0]) * ((int)c[2] - (int)a[2]) - ((int)c[0] - (int)a[0]) * ((int)b[2] - (int)a[2]);
 }
@@ -1088,24 +1088,24 @@ inline int area2(const unsigned char* a, const unsigned char* b, const unsigned 
 //	The arguments are negated to ensure that they are 0/1
 //	values.  Then the bitwise Xor operator may apply.
 //	(This idea is due to Michael Baldwin.)
-inline bool xorb(bool x, bool y)
+inline static bool xorb(bool x, bool y)
 {
 	return !x ^ !y;
 }
 
 // Returns true iff c is strictly to the left of the directed
 // line through a to b.
-inline bool left(const unsigned char* a, const unsigned char* b, const unsigned char* c)
+inline static bool left(const unsigned char* a, const unsigned char* b, const unsigned char* c)
 {
 	return area2(a, b, c) < 0;
 }
 
-inline bool leftOn(const unsigned char* a, const unsigned char* b, const unsigned char* c)
+inline static bool leftOn(const unsigned char* a, const unsigned char* b, const unsigned char* c)
 {
 	return area2(a, b, c) <= 0;
 }
 
-inline bool collinear(const unsigned char* a, const unsigned char* b, const unsigned char* c)
+inline static bool collinear(const unsigned char* a, const unsigned char* b, const unsigned char* c)
 {
 	return area2(a, b, c) == 0;
 }
@@ -1301,7 +1301,7 @@ static int countPolyVerts(const unsigned short* p)
 	return MAX_VERTS_PER_POLY;
 }
 
-inline bool uleft(const unsigned short* a, const unsigned short* b, const unsigned short* c)
+inline static bool uleft(const unsigned short* a, const unsigned short* b, const unsigned short* c)
 {
 	return ((int)b[0] - (int)a[0]) * ((int)c[2] - (int)a[2]) -
 	((int)c[0] - (int)a[0]) * ((int)b[2] - (int)a[2]) < 0;
@@ -1444,7 +1444,7 @@ static bool canRemoveVertex(dtTileCachePolyMesh& mesh, const unsigned short rem)
 		return false;
 	
 	// Find edges which share the removed vertex.
-	unsigned short edges[MAX_REM_EDGES];
+	unsigned short edges[MAX_REM_EDGES]{};
 	int nedges = 0;
 	
 	for (int i = 0; i < mesh.npolys; ++i)
@@ -1518,7 +1518,7 @@ static dtStatus removeVertex(dtTileCachePolyMesh& mesh, const unsigned short rem
 	}
 	
 	int nedges = 0;
-	unsigned short edges[MAX_REM_EDGES*3];
+	unsigned short edges[MAX_REM_EDGES * 3]{};
 	int nhole = 0;
 	unsigned short hole[MAX_REM_EDGES];
 	int nharea = 0;
@@ -1634,8 +1634,8 @@ static dtStatus removeVertex(dtTileCachePolyMesh& mesh, const unsigned short rem
 	
 	
 	unsigned short tris[MAX_REM_EDGES*3];
-	unsigned char tverts[MAX_REM_EDGES*3];
-	unsigned short tpoly[MAX_REM_EDGES*3];
+	unsigned char tverts[MAX_REM_EDGES * 3]{};
+	unsigned short tpoly[MAX_REM_EDGES * 3]{};
 	
 	// Generate temp vertex array for triangulation.
 	for (int i = 0; i < nhole; ++i)
@@ -1660,7 +1660,7 @@ static dtStatus removeVertex(dtTileCachePolyMesh& mesh, const unsigned short rem
 		return DT_FAILURE | DT_BUFFER_TOO_SMALL;
 	
 	unsigned short polys[MAX_REM_EDGES*MAX_VERTS_PER_POLY];
-	unsigned char pareas[MAX_REM_EDGES];
+	unsigned char pareas[MAX_REM_EDGES]{};
 	
 	// Build initial polygons.
 	int npolys = 0;
@@ -1798,7 +1798,7 @@ dtStatus dtBuildTileCachePolyMesh(dtTileCacheAlloc* alloc,
 	memset(mesh.polys, 0xff, sizeof(unsigned short)*maxTris*MAX_VERTS_PER_POLY*2);
 	memset(mesh.areas, 0, sizeof(unsigned char)*maxTris);
 	
-	unsigned short firstVert[VERTEX_BUCKET_COUNT2];
+	unsigned short firstVert[VERTEX_BUCKET_COUNT2]{};
 	for (int i = 0; i < VERTEX_BUCKET_COUNT2; ++i)
 		firstVert[i] = DT_TILECACHE_NULL_IDX;
 	
@@ -1957,7 +1957,7 @@ dtStatus dtBuildTileCachePolyMesh(dtTileCacheAlloc* alloc,
 dtStatus dtMarkCylinderArea(dtTileCacheLayer& layer, const float* orig, const float cs, const float ch,
 							const float* pos, const float radius, const float height, const unsigned char areaId)
 {
-	float bmin[3], bmax[3];
+	float bmin[3]{}, bmax[3]{};
 	bmin[0] = pos[0] - radius;
 	bmin[1] = pos[1];
 	bmin[2] = pos[2] - radius;

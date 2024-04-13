@@ -1,4 +1,4 @@
-#include "catch2/catch_all.hpp"
+#include "../Contrib/catch2/catch_all.hpp"
 
 #include "DetourCommon.h"
 

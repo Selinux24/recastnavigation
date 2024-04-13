@@ -677,8 +677,8 @@ static bool buildPolyDetail(rcContext* ctx, const float* in, const int nin,
 	static const int MAX_VERTS = 127;
 	static const int MAX_TRIS = 255;	// Max tris for delaunay is 2n-2-k (n=num verts, k=num hull verts).
 	static const int MAX_VERTS_PER_EDGE = 32;
-	float edge[(MAX_VERTS_PER_EDGE+1)*3];
-	int hull[MAX_VERTS];
+	float edge[(MAX_VERTS_PER_EDGE + 1) * 3]{};
+	int hull[MAX_VERTS]{};
 	int nhull = 0;
 	
 	nverts = nin;
@@ -842,12 +842,13 @@ static bool buildPolyDetail(rcContext* ctx, const float* in, const int nin,
 		{
 			for (int x = x0; x < x1; ++x)
 			{
-				float pt[3];
+				float pt[3]{};
 				pt[0] = x*sampleDist;
 				pt[1] = (bmax[1]+bmin[1])*0.5f;
 				pt[2] = z*sampleDist;
 				// Make sure the samples are not too close to the edges.
-				if (distToPoly(nin,in,pt) > -sampleDist/2) continue;
+				float pdist = distToPoly(nin, in, pt);
+				if (pdist > -sampleDist/2) continue;
 				samples.push(x);
 				samples.push(getHeight(pt[0], pt[1], pt[2], cs, ics, chf.ch, heightSearchRadius, hp));
 				samples.push(z);
@@ -872,7 +873,7 @@ static bool buildPolyDetail(rcContext* ctx, const float* in, const int nin,
 			{
 				const int* s = &samples[i*4];
 				if (s[3]) continue; // skip added.
-				float pt[3];
+				float pt[3]{};
 				// The sample location is jittered to get rid of some bad triangulations
 				// which are cause by symmetrical data from the grid structure.
 				pt[0] = s[0]*sampleDist + getJitterX(i)*cs*0.1f;

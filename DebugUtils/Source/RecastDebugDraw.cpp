@@ -30,9 +30,9 @@ void duDebugDrawTriMesh(duDebugDraw* dd, const float* verts, int /*nverts*/,
 	if (!tris) return;
 	if (!normals) return;
 
-	float uva[2];
-	float uvb[2];
-	float uvc[2];
+	float uva[2]{};
+	float uvb[2]{};
+	float uvc[2]{};
 
 	const unsigned int unwalkable = duRGBA(192,128,0,255);
 
@@ -87,9 +87,9 @@ void duDebugDrawTriMeshSlope(duDebugDraw* dd, const float* verts, int /*nverts*/
 	
 	const float walkableThr = cosf(walkableSlopeAngle/180.0f*DU_PI);
 	
-	float uva[2];
-	float uvb[2];
-	float uvc[2];
+	float uva[2]{};
+	float uvb[2]{};
+	float uvc[2]{};
 	
 	dd->texture(true);
 
@@ -377,7 +377,7 @@ void duDebugDrawHeightfieldLayer(duDebugDraw* dd, const struct rcHeightfieldLaye
 	unsigned int color = duIntToCol(idx+1, 255);
 	
 	// Layer bounds
-	float bmin[3], bmax[3];
+	float bmin[3]{}, bmax[3]{};
 	bmin[0] = layer.bmin[0] + layer.minx*cs;
 	bmin[1] = layer.bmin[1];
 	bmin[2] = layer.bmin[2] + layer.miny*cs;
@@ -876,7 +876,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 		else
 			color = dd->areaToCol(area);
 		
-		unsigned short vi[3];
+		unsigned short vi[3]{};
 		for (int j = 2; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;

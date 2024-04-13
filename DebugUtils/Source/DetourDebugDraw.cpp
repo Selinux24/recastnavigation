@@ -91,7 +91,7 @@ static void drawPolyBoundaries(duDebugDraw* dd, const dtMeshTile* tile,
 			for (int k = 0; k < pd->triCount; ++k)
 			{
 				const unsigned char* t = &tile->detailTris[(pd->triBase+k)*4];
-				const float* tv[3];
+				const float* tv[3]{};
 				for (int m = 0; m < 3; ++m)
 				{
 					if (t[m] < p->vertCount)
@@ -537,7 +537,7 @@ void duDebugDrawTileCacheLayerAreas(struct duDebugDraw* dd, const dtTileCacheLay
 	unsigned int color = duIntToCol(idx+1, 255);
 	
 	// Layer bounds
-	float lbmin[3], lbmax[3];
+	float lbmin[3]{}, lbmax[3]{};
 	lbmin[0] = bmin[0] + layer.header->minx*cs;
 	lbmin[1] = bmin[1];
 	lbmin[2] = bmin[2] + layer.header->miny*cs;
@@ -591,7 +591,7 @@ void duDebugDrawTileCacheLayerRegions(struct duDebugDraw* dd, const dtTileCacheL
 	unsigned int color = duIntToCol(idx+1, 255);
 	
 	// Layer bounds
-	float lbmin[3], lbmax[3];
+	float lbmin[3]{}, lbmax[3]{};
 	lbmin[0] = bmin[0] + layer.header->minx*cs;
 	lbmin[1] = bmin[1];
 	lbmin[2] = bmin[2] + layer.header->miny*cs;
@@ -749,7 +749,7 @@ void duDebugDrawTileCachePolyMesh(duDebugDraw* dd, const struct dtTileCachePolyM
 		else
 			color = dd->areaToCol(area);
 		
-		unsigned short vi[3];
+		unsigned short vi[3]{};
 		for (int j = 2; j < nvp; ++j)
 		{
 			if (p[j] == DT_TILECACHE_NULL_IDX) break;

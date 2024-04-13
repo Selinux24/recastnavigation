@@ -214,7 +214,7 @@ public:
 	virtual void vertex(const float* pos, unsigned int color);
 	virtual void end();
 	void clear();
-	void draw(struct duDebugDraw* dd);
+	void draw(struct duDebugDraw* dd) const;
 private:
 	// Explicitly disabled copy constructor and copy assignment operator.
 	duDisplayList(const duDisplayList&);
